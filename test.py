@@ -54,9 +54,17 @@ async def on_message(message):
     if message.channel.id != TARGET_CHANNEL_ID:
         return
 
-    now = datetime.now()
-    date = now.strftime("%Y-%m-%d")
-    time = now.strftime("%H:%M:%S")
+from datetime import datetime
+from zoneinfo import ZoneInfo  # Python 3.9+
+
+now_jst = datetime.now(ZoneInfo("Asia/Tokyo"))
+date_str = now_jst.strftime("%Y-%m-%d")
+time_str = now_jst.strftime("%H:%M:%S")
+
+
+
+
+
 
     if "おはよう" in message.content:
         sheet.append_row([
