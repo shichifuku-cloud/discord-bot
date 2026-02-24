@@ -20,6 +20,7 @@ scope = [
 
 import os
 import json
+import base64
 from oauth2client.service_account import ServiceAccountCredentials
 
 scope = [
@@ -27,7 +28,9 @@ scope = [
     "https://www.googleapis.com/auth/drive",
 ]
 
-creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+decoded = base64.b64decode(os.environ["GOOGLE_CREDENTIALS_BASE64"])
+creds_dict = json.loads(decoded)
+
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 
 client = gspread.authorize(creds)
