@@ -19,18 +19,15 @@ scope = [
 ]
 
 import os
-import json
 import base64
-from oauth2client.service_account import ServiceAccountCredentials
+import json
 
-scope = [
-    "https://spreadsheets.google.com/feeds",
-    "https://www.googleapis.com/auth/drive",
-]
+encoded = os.environ["GOOGLE_CREDENTIALS_BASE64"]
 
-decoded = base64.b64decode(os.environ["GOOGLE_CREDENTIALS_BASE64"])
-creds_dict = json.loads(decoded)
+decoded_bytes = base64.b64decode(encoded)
+decoded_str = decoded_bytes.decode("utf-8")
 
+creds_dict = json.loads(decoded_str)
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 
 client = gspread.authorize(creds)
