@@ -45,6 +45,10 @@ async def on_ready():
 
 TARGET_CHANNEL_ID = 1473898209381191858
 
+
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
 @bot.event
 async def on_message(message):
 
@@ -54,23 +58,15 @@ async def on_message(message):
     if message.channel.id != TARGET_CHANNEL_ID:
         return
 
-from datetime import datetime
-from zoneinfo import ZoneInfo  # Python 3.9+
-
-now_jst = datetime.now(ZoneInfo("Asia/Tokyo"))
-date_str = now_jst.strftime("%Y-%m-%d")
-time_str = now_jst.strftime("%H:%M:%S")
-
-
-
-
-
+    now_jst = datetime.now(ZoneInfo("Asia/Tokyo"))
+    date_str = now_jst.strftime("%Y-%m-%d")
+    time_str = now_jst.strftime("%H:%M:%S")
 
     if "おはよう" in message.content:
         sheet.append_row([
             message.author.display_name,
-            date,
-            time,
+            date_str,
+            time_str,
             "出勤"
         ])
         await message.channel.send("出勤を記録しました！")
@@ -78,8 +74,8 @@ time_str = now_jst.strftime("%H:%M:%S")
     elif "お疲れ" in message.content:
         sheet.append_row([
             message.author.display_name,
-            date,
-            time,
+            date_str,
+            time_str,
             "退勤"
         ])
         await message.channel.send("退勤を記録しました！")
